@@ -1,79 +1,50 @@
 import optparse
 import sys
 
-import matplotlib
-matplotlib.use('Agg')
-from pylab import *
+import pandas as pd
+import matplotlib.pyplot as plt
 
 # Class that parses a file and plots several graphs
 class Plotter:
     def __init__(self):
-        # create some fake data
-        self.x = []
-        self.y = []
-        self.all = []
-        # x ranges from 0 to 9
-        for i in range(0,10):
-            self.x.append(i)
-            vals = []
-            # each x value has 100 random values of X + random(0,10)
-            for j in range(0,100):
-                val = i + 10*random()
-                vals.append(val)
-                # keep track of all values ever generated
-                self.all.append(val)
-            self.y.append(vals)
-        # keep track of the averages for each X
-        self.averages = []
-        for array in self.y:
-            self.averages.append(average(array))
-
-    def equationPlot(self):
-        """ Create a line graph of an equation. """
-        clf()
-        x = np.arange(0,9.9,0.1)
-        plot(x,1/(10-x))
-        xlabel('X')
-        ylabel('1/(10-x)')
-        savefig('equation.png')
+        plt.style.use('ggplot')
+        pd.set_option('display.width', 1000)
+        pass
 
     def linePlot(self):
         """ Create a line graph. """
-        clf()
-        plot(self.x,self.averages)
-        xlabel('X Label (units)')
-        ylabel('Y Label (units)')
-        savefig('line.png')
+        data = pd.read_csv("data1.csv")
+        plt.figure()
+        ax = data.plot(x='Time',y='Value of Company')
+        ax.set_xlabel("Days")
+        ax.set_ylabel("Dollars (millions)")
+        fig = ax.get_figure()
+        fig.savefig('line.png')
+
 
     def boxPlot(self):
         """ Create a box plot. """
-        clf()
-        boxplot(self.y,positions=self.x,widths=0.5)
-        xlabel('X Label (units)')
-        ylabel('Y Label (units)')
-        savefig('boxplot.png')
-
-    def combinedPlot(self):
-        """ Create a graph that includes a line plot and a boxplot. """
-        clf()
-        # plot the line
-        plot(self.x,self.averages)
-        # plot the boxplot
-        boxplot(self.y,positions=self.x,widths=0.5)
-        xlabel('X Label (units)')
-        ylabel('Y Label (units)')
-        savefig('combined.png')
+        data = pd.read_csv("data2.csv")
+        plt.figure()
+        ax = data.boxplot(return_type='axes')
+        ax.set_xlabel("Day")
+        ax.set_ylabel("Level of Stress")
+        fig = ax.get_figure()
+        fig.savefig('boxplot.png')
 
     def histogramPlot(self):
         """ Create a histogram. """
-        clf()
-        hist(self.all,bins=range(0,20),rwidth=0.8)
-        savefig('histogram.png')
+        data = pd.read_csv("data3.csv")
+        plt.figure()
+        fig, ax = plt.subplots()
+        data.hist(ax=ax)
+        ax.set_xlabel("Pets")
+        ax.set_ylabel("Number of People")
+        fig = ax.get_figure()
+        fig.savefig('histogram.png')
 
 if __name__ == '__main__':
     p = Plotter()
-    p.equationPlot()
     p.linePlot()
     p.boxPlot()
-    p.combinedPlot()
     p.histogramPlot()
