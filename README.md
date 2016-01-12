@@ -29,17 +29,17 @@ pip install -r requirements.txt
 
 1. lapack/blas not installed
 
-Error:
+    Error:
 
-```
-numpy.distutils.system_info.NotFoundError: no lapack/blas resources found
-```
+    ```
+    numpy.distutils.system_info.NotFoundError: no lapack/blas resources found
+    ```
 
-Fix:
+    Fix:
 
-```
-sudo dnf install lapack-devel
-```
+    ```
+    sudo dnf install lapack-devel
+    ```
 
 ## Usage
 
